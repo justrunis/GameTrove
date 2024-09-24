@@ -1,1 +1,1 @@
-# DealTrove
+# GameTrove
