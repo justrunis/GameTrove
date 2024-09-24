@@ -48,8 +48,6 @@ export default function Games() {
     }
   };
 
-  console.log(data);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
