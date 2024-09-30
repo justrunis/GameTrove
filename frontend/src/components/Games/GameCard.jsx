@@ -2,7 +2,10 @@ import { motion } from "framer-motion";
 import Card from "../UI/Card";
 import { useNavigate } from "react-router-dom";
 
-export default function GameCard({ game }) {
+export default function GameCard({
+  game,
+  className = "w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2",
+}) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -14,7 +17,7 @@ export default function GameCard({ game }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+      className={className}
     >
       <Card
         onClick={handleClick}

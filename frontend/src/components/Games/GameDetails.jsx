@@ -12,13 +12,13 @@ export default function GameDetails({
   return (
     <div className="flex flex-col gap-4">
       <p className="text-lg text-base-content">
-        <strong>Released:</strong> {released}
+        <strong>Released:</strong> {released || "Not Released"}
       </p>
       <p className="text-lg text-base-content">
         <strong>Genres:</strong> {genres.map((genre) => genre.name).join(", ")}
       </p>
       <p className="text-lg text-base-content">
-        <strong>Achievement Count:</strong> {achievements}
+        <strong>Achievement Count:</strong> {achievements || 0}
       </p>
       <p className="text-lg text-base-content">
         <strong>Alternate Names:</strong> {altNames.join(", ")}

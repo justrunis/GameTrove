@@ -13,6 +13,10 @@ import PlatformsSection from "../components/Games/PlatformsSection";
 import StoresSection from "../components/Games/StoresSection";
 import TagsSection from "../components/Games/TagsSection";
 import MetacriticScoresSection from "../components/Games/MetacriticScoresSection";
+import GameScreenshotSection from "../components/Games/GameScreenshotSection";
+import GameAchievementSection from "../components/Games/GameAchievmentSection";
+import GameSeriesSection from "../components/Games/GameSeriesSection";
+import Collapsible from "../components/UI/Collapsible";
 
 export default function Game() {
   const { id } = useParams();
@@ -27,10 +31,18 @@ export default function Game() {
   }
 
   if (isError) {
-    return <ErrorIndicator error={error} />;
+    return (
+      <div className="container mx-auto px-4 py-6 rounded-lg mt-5">
+        <ErrorIndicator
+          title="Could not load Game"
+          message={error.message || "An error occurred"}
+        />
+      </div>
+    );
   }
 
   if (data) {
+    console.log(data);
     document.title = data.name;
     return (
       <motion.div
@@ -60,32 +72,38 @@ export default function Game() {
             rating={data.rating}
           />
         </div>
-
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-base-content mt-8 mb-2">
-            Description
-          </h2>
-          <p className="text-lg text-base-content">
+        <Collapsible title="Description">
+          <p className="text-lg text-base-content mt-4">
             {data.description_raw || "No Description Available"}
           </p>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        </Collapsible>
+        <Collapsible title="Game Series">
+          <GameSeriesSection id={id} />
+        </Collapsible>
+        <Collapsible title="Player Ratings">
           <RatingsSection ratings={data.ratings} />
+        </Collapsible>
+        <Collapsible title="Developers">
           <DevelopersSection developers={data.developers} />
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        </Collapsible>
+        <Collapsible title="Platforms">
           <PlatformsSection platforms={data.platforms} />
-          <StoresSection stores={data.stores} />
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        </Collapsible>
+        <Collapsible title="Stores">
+          <StoresSection stores={data.stores} id={data.id} />
+        </Collapsible>
+        <Collapsible title="Tags">
           <TagsSection tags={data.tags} />
+        </Collapsible>
+        <Collapsible title="Metacritic Scores">
           <MetacriticScoresSection
             metacriticPlatforms={data.metacritic_platforms}
           />
+        </Collapsible>
+        <div className="flex items-center justify-center">
+          <GameScreenshotSection id={id} />
         </div>
+        <GameAchievementSection id={id} />
       </motion.div>
     );
   }

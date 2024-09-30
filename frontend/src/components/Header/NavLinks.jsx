@@ -7,9 +7,15 @@ import {
   FaRegSun,
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { DARK_THEME, LIGHT_THEME } from "../../utils/constants";
+import Logo from "./Logo";
+import { useNavigate } from "react-router-dom";
 
 export default function NavLinks({ closeMenu }) {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || DARK_THEME
+  );
+  const navigate = useNavigate();
 
   const handleLinkClick = () => {
     if (closeMenu) {
@@ -29,14 +35,14 @@ export default function NavLinks({ closeMenu }) {
     const root = document.documentElement;
     const theme = root.getAttribute("data-theme");
 
-    if (theme === "dark" || localStorage.getItem("theme") === "dark") {
-      root.setAttribute("data-theme", "light");
-      localStorage.setItem("theme", "light");
-      setTheme("light");
+    if (theme === DARK_THEME || localStorage.getItem("theme") === DARK_THEME) {
+      root.setAttribute("data-theme", LIGHT_THEME);
+      localStorage.setItem("theme", LIGHT_THEME);
+      setTheme(LIGHT_THEME);
     } else {
-      root.setAttribute("data-theme", "dark");
-      localStorage.setItem("theme", "dark");
-      setTheme("dark");
+      root.setAttribute("data-theme", DARK_THEME);
+      localStorage.setItem("theme", DARK_THEME);
+      setTheme(DARK_THEME);
     }
   };
 
@@ -44,6 +50,7 @@ export default function NavLinks({ closeMenu }) {
     <div className="flex flex-col lg:flex-row w-full justify-between items-center lg:items-end">
       {/* Left-aligned Navigation Links */}
       <div className="flex flex-col lg:flex-row gap-4">
+        <Logo className="w-40" onClick={() => navigate("/")} />
         <NavLink
           to="/"
           onClick={handleLinkClick}

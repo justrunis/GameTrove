@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  font-family: "Playwrite DE Grund", cursive, sans-serif;
+}
+
+body {
+  background-image: url(http://transparenttextures.com/patterns/cubes.png);
+}

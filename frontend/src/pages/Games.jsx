@@ -18,6 +18,8 @@ export default function Games() {
 
   document.title = "Games";
 
+  const PAGE_SIZE = 20;
+
   const { data, error, isLoading, isError } = useQuery({
     queryKey: ["games", { page: currentPage, search: currentQuery }],
     queryFn: () => fetchGames({ page: currentPage, search: currentQuery }),
@@ -29,7 +31,14 @@ export default function Games() {
   }
 
   if (isError) {
-    return <ErrorIndicator error={error} />;
+    return (
+      <div className="container mx-auto px-4 py-6 rounded-lg mt-5">
+        <ErrorIndicator
+          title="Could not load games"
+          message={error.message || "An error occurred"}
+        />
+      </div>
+    );
   }
 
   const handlePageChange = (page) => {
@@ -48,30 +57,35 @@ export default function Games() {
     }
   };
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="container flex flex-col items-center justify-center mx-auto rounded-lg mt-5 p-4"
-    >
-      <h1 className="text-3xl font-bold text-base-content">Games</h1>
-      <SearchBar
-        onSearch={handleSearch}
-        placeHolder="Search games..."
-        className="mt-4"
-        value={currentQuery}
-      />
-      <div className="flex flex-wrap justify-center">
-        {data.results.map((game) => (
-          <GameCard key={game.id} game={game} />
-        ))}
-      </div>
-      <Pager
-        totalPages={data?.count / data?.results.length}
-        currentPage={currentPage}
-        setCurrentPage={handlePageChange}
-      />
-    </motion.div>
-  );
+  const totalPages = Math.ceil(data?.count / PAGE_SIZE);
+
+  if (data) {
+    console.log(data);
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="container flex flex-col items-center justify-center mx-auto rounded-lg mt-5 p-4"
+      >
+        <h1 className="text-3xl font-bold text-base-content">Games</h1>
+        <SearchBar
+          onSearch={handleSearch}
+          placeHolder="Search games..."
+          className="mt-4"
+          value={currentQuery}
+        />
+        <div className="flex flex-wrap justify-center">
+          {data.results.map((game) => (
+            <GameCard key={game.id} game={game} />
+          ))}
+        </div>
+        <Pager
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={handlePageChange}
+        />
+      </motion.div>
+    );
+  }
 }
