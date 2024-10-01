@@ -10,7 +10,7 @@ import AchievmentCard from "./AchievmentCard";
 
 export default function GameAchievementSection({ id }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get("page") || "1", 10);
+  const currentPage = parseInt(searchParams.get("achievmentPage") || "1", 10);
 
   const PAGE_SIZE = 10;
 
@@ -37,7 +37,7 @@ export default function GameAchievementSection({ id }) {
 
   const handlePageChange = (page) => {
     const newParams = new URLSearchParams(searchParams);
-    newParams.set("page", page);
+    newParams.set("achievmentPage", page);
     setSearchParams(newParams);
   };
 
@@ -48,11 +48,8 @@ export default function GameAchievementSection({ id }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="container mx-auto px-4 py-6 rounded-lg bg-base-200"
+        className="container mx-auto px-4 py-6 rounded-lg"
       >
-        <h2 className="text-2xl font-bold text-center text-base-content my-2">
-          Achievements
-        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {data.results.length === 0 && (
             <p className="text-lg text-base-content">
@@ -63,13 +60,15 @@ export default function GameAchievementSection({ id }) {
             <AchievmentCard key={achievement.id} achievement={achievement} />
           ))}
         </div>
-        <div className="flex justify-center items-center mt-4">
-          <Pager
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setCurrentPage={handlePageChange}
-          />
-        </div>
+        {data.results.length > 0 && (
+          <div className="flex justify-center items-center mt-4">
+            <Pager
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={handlePageChange}
+            />
+          </div>
+        )}
       </motion.div>
     );
   }

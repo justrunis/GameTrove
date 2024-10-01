@@ -1,23 +1,23 @@
-import { fetchGameSeries } from "../../api/http";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { fetchGameDLC } from "../../api/http";
+import { STALE_TIME } from "../../utils/constants";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorIndicator from "../UI/ErrorIndicator";
-import { STALE_TIME } from "../../utils/constants";
 import GameCard from "./GameCard";
-import { useSearchParams } from "react-router-dom";
 import Pager from "../UI/Pager";
+import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function GameSeriesSection({ id }) {
+export default function GameDLCSection({ id }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get("seriesPage") || "1", 10);
+  const currentPage = parseInt(searchParams.get("dlcPage") || "1", 10);
 
   const PAGE_SIZE = 10;
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["gameSeries", { id, page: currentPage }],
-    queryFn: () => fetchGameSeries({ id, page: currentPage }),
+    queryKey: ["gameDLC", { id, page: currentPage }],
+    queryFn: () => fetchGameDLC({ id, page: currentPage }),
     staleTime: STALE_TIME,
   });
 
@@ -31,7 +31,7 @@ export default function GameSeriesSection({ id }) {
 
   const handlePageChange = (page) => {
     const newParams = new URLSearchParams(searchParams);
-    newParams.set("seriesPage", page);
+    newParams.set("dlcPage", page);
     setSearchParams(newParams);
   };
 
@@ -45,7 +45,7 @@ export default function GameSeriesSection({ id }) {
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
         >
           {data.results.length === 0 && (
-            <p className="text-lg text-base-content">No Series Available</p>
+            <p className="text-lg text-base-content">No DLC Available</p>
           )}
           {data.results.map((game) => (
             <GameCard key={game.id} game={game} className="w-full">
@@ -63,15 +63,13 @@ export default function GameSeriesSection({ id }) {
             </GameCard>
           ))}
         </motion.div>
-        {data.results.length > 0 && (
-          <div className="flex justify-center mt-4">
-            <Pager
-              currentPage={currentPage}
-              totalPages={Math.ceil(data.count / PAGE_SIZE)}
-              setCurrentPage={handlePageChange}
-            />
-          </div>
-        )}
+        <div className="flex justify-center mt-4">
+          <Pager
+            currentPage={currentPage}
+            totalPages={Math.ceil(data.count / PAGE_SIZE)}
+            setCurrentPage={handlePageChange}
+          />
+        </div>
       </>
     );
   }

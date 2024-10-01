@@ -75,16 +75,23 @@ export default function Games() {
           className="mt-4"
           value={currentQuery}
         />
-        <div className="flex flex-wrap justify-center">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+          {data.results.length === 0 && (
+            <p className="text-lg text-base-content mt-4">No games found</p>
+          )}
           {data.results.map((game) => (
-            <GameCard key={game.id} game={game} />
+            <GameCard key={game.id} game={game} className="min-w-[200px]" />
           ))}
         </div>
-        <Pager
-          totalPages={totalPages}
-          currentPage={currentPage}
-          setCurrentPage={handlePageChange}
-        />
+
+        {data.results.length > 0 && (
+          <Pager
+            totalPages={totalPages}
+            currentPage={currentPage}
+            setCurrentPage={handlePageChange}
+          />
+        )}
       </motion.div>
     );
   }

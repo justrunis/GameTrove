@@ -17,6 +17,8 @@ import GameScreenshotSection from "../components/Games/GameScreenshotSection";
 import GameAchievementSection from "../components/Games/GameAchievmentSection";
 import GameSeriesSection from "../components/Games/GameSeriesSection";
 import Collapsible from "../components/UI/Collapsible";
+import GameDLCSection from "../components/Games/GameDLCSection";
+import GamePrices from "../components/Games/GamePrices";
 
 export default function Game() {
   const { id } = useParams();
@@ -42,7 +44,6 @@ export default function Game() {
   }
 
   if (data) {
-    console.log(data);
     document.title = data.name;
     return (
       <motion.div
@@ -77,14 +78,8 @@ export default function Game() {
             {data.description_raw || "No Description Available"}
           </p>
         </Collapsible>
-        <Collapsible title="Game Series">
-          <GameSeriesSection id={id} />
-        </Collapsible>
-        <Collapsible title="Player Ratings">
-          <RatingsSection ratings={data.ratings} />
-        </Collapsible>
-        <Collapsible title="Developers">
-          <DevelopersSection developers={data.developers} />
+        <Collapsible title="Best prices">
+          <GamePrices title={data.name} />
         </Collapsible>
         <Collapsible title="Platforms">
           <PlatformsSection platforms={data.platforms} />
@@ -92,18 +87,34 @@ export default function Game() {
         <Collapsible title="Stores">
           <StoresSection stores={data.stores} id={data.id} />
         </Collapsible>
-        <Collapsible title="Tags">
-          <TagsSection tags={data.tags} />
+        <Collapsible title="Developers">
+          <DevelopersSection developers={data.developers} />
+        </Collapsible>
+        <Collapsible title="Game Series">
+          <GameSeriesSection id={id} />
+        </Collapsible>
+        <Collapsible title="DLCs">
+          <GameDLCSection id={id} />
         </Collapsible>
         <Collapsible title="Metacritic Scores">
           <MetacriticScoresSection
             metacriticPlatforms={data.metacritic_platforms}
           />
         </Collapsible>
+        <Collapsible title="Player Ratings">
+          <RatingsSection ratings={data.ratings} />
+        </Collapsible>
+
+        <Collapsible title="Tags">
+          <TagsSection tags={data.tags} />
+        </Collapsible>
+
+        <Collapsible title="Achievements">
+          <GameAchievementSection id={id} />
+        </Collapsible>
         <div className="flex items-center justify-center">
           <GameScreenshotSection id={id} />
         </div>
-        <GameAchievementSection id={id} />
       </motion.div>
     );
   }

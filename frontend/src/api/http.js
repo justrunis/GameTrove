@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { API_URL, API_KEY } from "../utils/constants";
+import { API_URL, API_KEY, CHEAPSHARK_API_URL } from "../utils/constants";
 
 export const queryClient = new QueryClient();
 
@@ -50,7 +50,18 @@ export const fetchGameAchievements = async ({ id, page }) => {
   return fetchFromApi(url);
 };
 
-export const fetchGameSeries = async ({ id }) => {
-  const url = `${API_URL}/games/${id}/game-series?key=${API_KEY}`;
+export const fetchGameSeries = async ({ id, page }) => {
+  const url = `${API_URL}/games/${id}/game-series?key=${API_KEY}&page=${page}`;
+  return fetchFromApi(url);
+};
+
+export const fetchGameDLC = async ({ id, page }) => {
+  const url = `${API_URL}/games/${id}/additions?key=${API_KEY}&page=${page}`;
+  return fetchFromApi(url);
+};
+
+export const fetchGamePrices = async ({ title }) => {
+  const url = `${CHEAPSHARK_API_URL}/games?title=${title}`;
+  console.log(url);
   return fetchFromApi(url);
 };
