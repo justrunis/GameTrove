@@ -7,6 +7,7 @@ export default function Collapsible({
   title,
   className = "bg-base-100 rounded-lg p-4 m-2",
   children,
+  dataTip,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const contentRef = useRef(null);

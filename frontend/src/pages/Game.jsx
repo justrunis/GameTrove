@@ -50,7 +50,7 @@ export default function Game() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="container mx-auto px-4 py-6 bg-base-300 rounded-lg mt-5"
+        className="container mx-auto px-4 py-6 my-5 bg-base-300 rounded-lg mt-5 border-2 border-primary"
       >
         <h1 className="text-4xl font-bold text-center text-base-content mb-8">
           {data.name}
@@ -78,7 +78,7 @@ export default function Game() {
             {data.description_raw || "No Description Available"}
           </p>
         </Collapsible>
-        <Collapsible title="Best prices">
+        <Collapsible title="Best Prices in Stores">
           <GamePrices title={data.name} />
         </Collapsible>
         <Collapsible title="Platforms">

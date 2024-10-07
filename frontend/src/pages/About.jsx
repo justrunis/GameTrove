@@ -35,7 +35,12 @@ export default function About() {
       >
         About Us
       </motion.h1>
-      <img src={logo} alt="Game Trove Logo" className="w-60" />
+      <motion.img
+        variants={childVariants}
+        src={logo}
+        alt="Game Trove Logo"
+        className="w-60"
+      />
       <motion.p variants={childVariants} className="text-lg text-center mt-4">
         Game Trove is the ultimate resource for game information. We provide
         detailed information on games, developers, platforms, and more.
@@ -46,9 +51,6 @@ export default function About() {
       >
         <Link to="/games">
           <Button className="btn btn-accent">Explore games</Button>
-        </Link>
-        <Link to="/about">
-          <Button className="btn btn-secondary">Learn more about us</Button>
         </Link>
       </motion.div>
     </motion.div>

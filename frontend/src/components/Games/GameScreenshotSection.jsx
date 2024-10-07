@@ -19,10 +19,7 @@ export default function GameScreenshotSection({ id }) {
   if (isError) {
     return (
       <div className="container mx-auto px-4 py-6 rounded-lg mt-5">
-        <ErrorIndicator
-          title="Could not load Screenshots"
-          message={error.message || "An error occurred"}
-        />
+        <ErrorIndicator error={error} />
       </div>
     );
   }

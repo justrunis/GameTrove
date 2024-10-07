@@ -7,14 +7,13 @@ import {
   FaRegSun,
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { DARK_THEME, LIGHT_THEME } from "../../utils/constants";
+import { DARK_THEME } from "../../utils/constants";
 import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
+import ThemeSelector from "../UI/ThemeSelector";
 
 export default function NavLinks({ closeMenu }) {
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || DARK_THEME
-  );
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const navigate = useNavigate();
 
   const handleLinkClick = () => {
@@ -30,21 +29,6 @@ export default function NavLinks({ closeMenu }) {
       setTheme(theme);
     }
   }, []);
-
-  const changeTheme = () => {
-    const root = document.documentElement;
-    const theme = root.getAttribute("data-theme");
-
-    if (theme === DARK_THEME || localStorage.getItem("theme") === DARK_THEME) {
-      root.setAttribute("data-theme", LIGHT_THEME);
-      localStorage.setItem("theme", LIGHT_THEME);
-      setTheme(LIGHT_THEME);
-    } else {
-      root.setAttribute("data-theme", DARK_THEME);
-      localStorage.setItem("theme", DARK_THEME);
-      setTheme(DARK_THEME);
-    }
-  };
 
   return (
     <div className="flex flex-col lg:flex-row w-full justify-between items-center lg:items-end">
@@ -98,15 +82,7 @@ export default function NavLinks({ closeMenu }) {
       {/* Right-aligned User Links */}
       <div className="flex flex-col lg:flex-row gap-4 items-center">
         {/* Theme Toggle */}
-        <label className="swap swap-rotate">
-          <input
-            type="checkbox"
-            onChange={changeTheme}
-            checked={theme === "dark"}
-          />
-          <FaRegSun className="swap-on text-2xl text-primary-content" />
-          <FaRegMoon className="swap-off text-2xl text-primary-content" />
-        </label>
+        <ThemeSelector />
       </div>
     </div>
   );

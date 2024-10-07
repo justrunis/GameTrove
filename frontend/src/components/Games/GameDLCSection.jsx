@@ -63,13 +63,15 @@ export default function GameDLCSection({ id }) {
             </GameCard>
           ))}
         </motion.div>
-        <div className="flex justify-center mt-4">
-          <Pager
-            currentPage={currentPage}
-            totalPages={Math.ceil(data.count / PAGE_SIZE)}
-            setCurrentPage={handlePageChange}
-          />
-        </div>
+        {data.results.length > 0 && (
+          <div className="flex justify-center mt-4">
+            <Pager
+              currentPage={currentPage}
+              totalPages={Math.ceil(data.count / PAGE_SIZE)}
+              setCurrentPage={handlePageChange}
+            />
+          </div>
+        )}
       </>
     );
   }

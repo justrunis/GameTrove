@@ -23,7 +23,7 @@ export default function GamePriceCard({
           <img
             src={price.thumb}
             alt={price.external}
-            className="w-full h-48 object-cover"
+            className="w-full h-48 object-contain"
           />
           <div className="absolute top-0 left-0 p-2 bg-accent bg-opacity-80 text-white font-bold rounded-br-lg">
             {price.cheapest} {"$"}

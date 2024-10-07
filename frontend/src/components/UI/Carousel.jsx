@@ -35,7 +35,7 @@ export default function Carousel({
               <motion.img
                 src={image}
                 alt="carousel"
-                className="w-auto h-full"
+                className="w-auto h-full rounded-lg shadow-lg"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
