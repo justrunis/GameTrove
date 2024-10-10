@@ -60,7 +60,6 @@ export default function Games() {
   const totalPages = Math.ceil(data?.count / PAGE_SIZE);
 
   if (data) {
-    console.log(data);
     return (
       <motion.div
         initial={{ opacity: 0 }}
