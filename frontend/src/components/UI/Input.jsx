@@ -10,11 +10,12 @@ export default function Input({
   inputClassName,
   delay = 0,
   isTextarea = false,
+  ...props
 }) {
   const InputComponent = isTextarea ? "textarea" : "input";
 
   return (
-    <div className="flex flex-col mb-4">
+    <div className="flex flex-col">
       <motion.label
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -34,6 +35,7 @@ export default function Input({
         value={value}
         onChange={onChange}
         className={inputClassName}
+        {...props}
       />
     </div>
   );

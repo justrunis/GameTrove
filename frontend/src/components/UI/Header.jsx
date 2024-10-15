@@ -24,7 +24,7 @@ export default function Header() {
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -50 }}
-              className="lg:hidden absolute top-20 left-0 right-0 bg-primary p-4 z-50"
+              className="lg:hidden absolute top-20 left-0 right-0 bg-primary p-4 z-50 border-4 border-accent shadow-lg"
             >
               <NavLinks closeMenu={handleCloseMenu} />
             </motion.div>
