@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { IUser } from "../models/user";
 
 import { getUsers } from "../controllers/user";
 
