@@ -6,7 +6,6 @@ import ErrorIndicator from "../components/UI/ErrorIndicator";
 import { STALE_TIME } from "../utils/constants";
 import GameCard from "../components/Games/GameCard";
 import Pager from "../components/UI/Pager";
-import { useState, useEffect } from "react";
 import SearchBar from "../components/UI/SearchBar";
 import { useSearchParams } from "react-router-dom";
 
@@ -14,7 +13,6 @@ export default function Games() {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const currentQuery = searchParams.get("query") || "";
-  const currentFunction = searchParams.get("function") || "";
 
   document.title = "Games";
 

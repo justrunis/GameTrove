@@ -1,4 +1,5 @@
 export const API_KEY = import.meta.env.VITE_API_KEY;
+export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 export const API_URL = "https://api.rawg.io/api";
 export const CHEAPSHARK_API_URL = "https://www.cheapshark.com/api/1.0";
 export const CHEAPSHARK_REDIRECT_URL =

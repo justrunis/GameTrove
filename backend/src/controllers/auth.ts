@@ -11,14 +11,14 @@ export const createUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { username, email, password, passwordRepeat } = req.body;
+    const { username, email, password, confirmPassword } = req.body;
 
-    if (!username || !email || !password || !passwordRepeat) {
+    if (!username || !email || !password || !confirmPassword) {
       res.status(400).json({ message: "All fields are required" });
       return;
     }
 
-    if (password !== passwordRepeat) {
+    if (password !== confirmPassword) {
       res.status(400).json({ message: "Passwords do not match." });
       return;
     }
@@ -52,24 +52,24 @@ export const createUser = async (
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(404).json({ message: "Invalid username or password." });
+      res.status(404).json({ message: "Invalid email or password." });
       return;
     }
 
     const passwordMatch = await bcryptjs.compare(password, user.password);
 
     if (!passwordMatch) {
-      res.status(404).json({ message: "Invalid username or password." });
+      res.status(404).json({ message: "Invalid email or password." });
       return;
     }
 
     const token = jwt.sign(
-      { username: user.username, role: user.role },
+      { email: user.email, role: user.role, id: user._id },
       process.env.JWT_SECRET as string,
       { expiresIn: tokenExpiryTime }
     );
@@ -83,7 +83,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
-    const perPage = 10;
+    const perPage = 3;
     const page = parseInt(req.query.page as string) || 1;
     const skip = (page - 1) * perPage;
     const limit = perPage;

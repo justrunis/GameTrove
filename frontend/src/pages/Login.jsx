@@ -5,6 +5,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { validateLoginForm } from "../utils/validation";
 import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "../api/http";
+import { useNavigate } from "react-router-dom";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -22,7 +25,7 @@ const childVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function Login() {
+export default function Login({ onLogin }) {
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
@@ -31,6 +34,22 @@ export default function Login() {
   const [error, setError] = useState({
     email: "",
     password: "",
+  });
+
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      localStorage.setItem("game-trove-token", data.token);
+      onLogin(data.token);
+      toast.success(data.message);
+      clearInputs();
+      navigate("/games"); // later change to profile page
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 
   const handleChange = (e) => {
@@ -47,11 +66,7 @@ export default function Login() {
     if (Object.keys(validationResponse).length > 0) {
       setError(validationResponse);
     } else {
-      toast.success("Form submitted successfully");
-      setError({
-        email: "",
-        password: "",
-      });
+      mutation.mutate({ userData: userInput });
     }
   };
 

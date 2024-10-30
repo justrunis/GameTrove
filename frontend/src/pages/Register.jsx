@@ -4,6 +4,9 @@ import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
 import { useState } from "react";
 import { validateRegistrationForm } from "../utils/validation";
+import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import { createUser } from "../api/http";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -60,6 +63,17 @@ export default function Register() {
     confirmPassword: "",
   });
 
+  const mutation = useMutation({
+    mutationFn: createUser,
+    onSuccess: () => {
+      toast.success("User created successfully");
+      clearInputs();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   const handleChange = (e) => {
     setUserInput((prev) => ({
       ...prev,
@@ -74,7 +88,7 @@ export default function Register() {
     if (validationResponse) {
       setError(validationResponse);
     } else {
-      alert("Form submitted successfully");
+      mutation.mutate({ userData: userInput });
     }
   };
 

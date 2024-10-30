@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
-import { connectDB } from "../util/database";
+import { connectDB } from "./util/database";
 import { Request, Response, NextFunction } from "express";
 
 import userRoutes from "./routes/user";
@@ -14,6 +14,16 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);

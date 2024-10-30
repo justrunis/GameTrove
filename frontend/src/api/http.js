@@ -1,5 +1,10 @@
 import { QueryClient } from "@tanstack/react-query";
-import { API_URL, API_KEY, CHEAPSHARK_API_URL } from "../utils/constants";
+import {
+  API_URL,
+  API_KEY,
+  CHEAPSHARK_API_URL,
+  SERVER_URL,
+} from "../utils/constants";
 
 export const queryClient = new QueryClient();
 
@@ -64,4 +69,77 @@ export const fetchGamePrices = async ({ title }) => {
   const url = `${CHEAPSHARK_API_URL}/games?title=${title}`;
   console.log(url);
   return fetchFromApi(url);
+};
+
+// SERVER
+export const createUser = async ({ userData }) => {
+  const url = `${SERVER_URL}/auth/register`;
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  };
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "An error occurred");
+  }
+
+  return response.json();
+};
+
+export const loginUser = async ({ userData }) => {
+  const url = `${SERVER_URL}/auth/login`;
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  };
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "An error occurred");
+  }
+
+  return response.json();
+};
+
+export const fetchAllUsers = async ({ page }) => {
+  const url = `${SERVER_URL}/auth/users?page=${page}`;
+  const options = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
+    },
+  };
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "An error occurred");
+  }
+
+  return response.json();
+};
+
+export const fetchUserProfile = async () => {
+  const url = `${SERVER_URL}/users/profile`;
+  const options = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
+    },
+  };
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "An error occurred");
+  }
+
+  return response.json();
 };

@@ -57,13 +57,10 @@ export default function Home() {
         variants={childVariants}
         className="flex flex-col lg:flex-row gap-4 mt-4"
       >
-        <Button className="btn btn-accent" onClick={() => navigate("/games")}>
+        <Button className="btn btn-success" onClick={() => navigate("/games")}>
           Explore games
         </Button>
-        <Button
-          className="btn btn-secondary"
-          onClick={() => navigate("/about")}
-        >
+        <Button className="btn btn-warning" onClick={() => navigate("/about")}>
           Learn more about us
         </Button>
       </motion.div>

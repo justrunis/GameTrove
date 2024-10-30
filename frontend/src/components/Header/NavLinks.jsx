@@ -1,19 +1,20 @@
 import { NavLink } from "react-router-dom";
-import {
-  FaHome,
-  FaFilm,
-  FaQuestionCircle,
-  FaRegMoon,
-  FaRegSun,
-} from "react-icons/fa";
+import { FaHome, FaFilm, FaQuestionCircle } from "react-icons/fa";
+import { BiSolidLogInCircle } from "react-icons/bi";
+import { MdPerson, MdAdminPanelSettings } from "react-icons/md";
+import { IoLogIn } from "react-icons/io5";
+import { CiLogout } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { DARK_THEME } from "../../utils/constants";
 import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
 import ThemeSelector from "../UI/ThemeSelector";
+import { AuthVerify, getUserRole } from "../../auth/auth";
 
 export default function NavLinks({ closeMenu }) {
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
+  const token = localStorage.getItem("game-trove-token");
+  const userRole = getUserRole(token);
   const navigate = useNavigate();
 
   const handleLinkClick = () => {
@@ -21,6 +22,15 @@ export default function NavLinks({ closeMenu }) {
       closeMenu();
     }
   };
+
+  const logoutUser = () => {
+    localStorage.removeItem("game-trove-token");
+    navigate("/");
+  };
+
+  useEffect(() => {
+    AuthVerify(token);
+  }, [token]);
 
   useEffect(() => {
     const theme = localStorage.getItem("theme");
@@ -77,10 +87,84 @@ export default function NavLinks({ closeMenu }) {
           <FaQuestionCircle className="inline mr-2" />
           About
         </NavLink>
+        {token && (
+          <NavLink
+            to="/profile"
+            onClick={handleLinkClick}
+            className={({ isActive }) =>
+              `flex items-center text-sm lg:text-lg font-bold ${
+                isActive
+                  ? "text-accent"
+                  : "text-primary-content hover:text-accent"
+              }`
+            }
+          >
+            <MdPerson className="inline mr-2" />
+            Profile
+          </NavLink>
+        )}
+        {userRole === "admin" && (
+          <NavLink
+            to="/admin"
+            onClick={handleLinkClick}
+            className={({ isActive }) =>
+              `flex items-center text-sm lg:text-lg font-bold ${
+                isActive
+                  ? "text-accent"
+                  : "text-primary-content hover:text-accent"
+              }`
+            }
+          >
+            <MdAdminPanelSettings className="inline mr-2" />
+            Admin
+          </NavLink>
+        )}
       </div>
 
       {/* Right-aligned User Links */}
       <div className="flex flex-col lg:flex-row gap-4 items-center">
+        {!token && (
+          <>
+            <NavLink
+              to="/login"
+              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `flex items-center text-sm lg:text-lg font-bold ${
+                  isActive
+                    ? "text-accent"
+                    : "text-primary-content hover:text-accent"
+                }`
+              }
+            >
+              <BiSolidLogInCircle className="inline mr-2" />
+              Login
+            </NavLink>
+            <NavLink
+              to="/register"
+              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `flex items-center text-sm lg:text-lg font-bold ${
+                  isActive
+                    ? "text-accent"
+                    : "text-primary-content hover:text-accent"
+                }`
+              }
+            >
+              <IoLogIn className="inline mr-2" />
+              Register
+            </NavLink>
+          </>
+        )}
+        {token && (
+          <NavLink
+            to="/"
+            onClick={logoutUser}
+            className="flex items-center text-sm lg:text-lg font-bold text-primary-content hover:text-accent"
+          >
+            <CiLogout className="inline mr-2" />
+            Logout
+          </NavLink>
+        )}
         {/* Theme Toggle */}
         <ThemeSelector />
       </div>
