@@ -45,7 +45,7 @@ export default function Login({ onLogin }) {
       onLogin(data.token);
       toast.success(data.message);
       clearInputs();
-      navigate("/games"); // later change to profile page
+      navigate("/profile");
     },
     onError: (error) => {
       toast.error(error.message);

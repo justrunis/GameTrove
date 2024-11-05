@@ -111,7 +111,7 @@ export const loginUser = async ({ userData }) => {
 };
 
 export const fetchAllUsers = async ({ page }) => {
-  const url = `${SERVER_URL}/auth/users?page=${page}`;
+  const url = `${SERVER_URL}/users?page=${page}`;
   const options = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
@@ -130,6 +130,44 @@ export const fetchAllUsers = async ({ page }) => {
 export const fetchUserProfile = async () => {
   const url = `${SERVER_URL}/users/profile`;
   const options = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
+    },
+  };
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "An error occurred");
+  }
+
+  return response.json();
+};
+
+export const updateUser = async ({ id, userData }) => {
+  const url = `${SERVER_URL}/users/${id}`;
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
+    },
+    body: JSON.stringify(userData),
+  };
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "An error occurred");
+  }
+
+  return response.json();
+};
+
+export const deleteUser = async ({ userId }) => {
+  const url = `${SERVER_URL}/users/${userId}`;
+  const options = {
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
     },

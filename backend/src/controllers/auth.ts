@@ -80,24 +80,3 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     return;
   }
 };
-
-export const getUsers = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const perPage = 3;
-    const page = parseInt(req.query.page as string) || 1;
-    const skip = (page - 1) * perPage;
-    const limit = perPage;
-
-    const users = await User.find().skip(skip).limit(limit);
-    const totalUsers = await User.countDocuments();
-
-    res.status(200).json({
-      users,
-      totalPages: Math.ceil(totalUsers / limit),
-      currentPage: page,
-    });
-  } catch (error: any) {
-    res.status(404).json({ message: error.message });
-    return;
-  }
-};

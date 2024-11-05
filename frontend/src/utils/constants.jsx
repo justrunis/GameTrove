@@ -21,6 +21,8 @@ export const stores = {
   11: "Epic Games",
 };
 
+export const ALL_ROLES = ["user", "admin"];
+
 export const THEMES = [
   "light",
   "dark",
