@@ -20,6 +20,7 @@ import Collapsible from "../components/UI/Collapsible";
 import GameDLCSection from "../components/Games/GameDLCSection";
 import GamePrices from "../components/Games/GamePrices";
 import UserGameProgress from "../components/Games/UserGameProgress";
+import GameReviewSection from "../components/Games/GameReviewSection";
 
 export default function Game() {
   const { id } = useParams();
@@ -113,6 +114,10 @@ export default function Game() {
 
         <Collapsible title="Achievements">
           <GameAchievementSection id={id} />
+        </Collapsible>
+
+        <Collapsible title="Reviews">
+          <GameReviewSection id={id} />
         </Collapsible>
         <div className="flex items-center justify-center">
           <GameScreenshotSection id={id} />

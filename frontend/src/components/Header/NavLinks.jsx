@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { FaHome, FaFilm, FaQuestionCircle } from "react-icons/fa";
-import { BiSolidLogInCircle } from "react-icons/bi";
+import { BiSolidLogInCircle, BiSolidDiscount } from "react-icons/bi";
 import { MdPerson, MdAdminPanelSettings } from "react-icons/md";
 import { IoLogIn } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
@@ -10,6 +10,7 @@ import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
 import ThemeSelector from "../UI/ThemeSelector";
 import { AuthVerify, getUserRole } from "../../auth/auth";
+import { getUserUsername } from "../../auth/auth";
 
 export default function NavLinks({ closeMenu }) {
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
@@ -74,6 +75,20 @@ export default function NavLinks({ closeMenu }) {
           Games
         </NavLink>
         <NavLink
+          to="/giveaways"
+          onClick={handleLinkClick}
+          className={({ isActive }) =>
+            `flex items-center text-sm lg:text-lg font-bold ${
+              isActive
+                ? "text-accent"
+                : "text-primary-content hover:text-accent"
+            }`
+          }
+        >
+          <BiSolidDiscount className="inline mr-2" />
+          Giveaways
+        </NavLink>
+        <NavLink
           to="/about"
           onClick={handleLinkClick}
           className={({ isActive }) =>
@@ -87,22 +102,6 @@ export default function NavLinks({ closeMenu }) {
           <FaQuestionCircle className="inline mr-2" />
           About
         </NavLink>
-        {token && (
-          <NavLink
-            to="/profile"
-            onClick={handleLinkClick}
-            className={({ isActive }) =>
-              `flex items-center text-sm lg:text-lg font-bold ${
-                isActive
-                  ? "text-accent"
-                  : "text-primary-content hover:text-accent"
-              }`
-            }
-          >
-            <MdPerson className="inline mr-2" />
-            Profile
-          </NavLink>
-        )}
         {userRole === "admin" && (
           <NavLink
             to="/admin"
@@ -156,14 +155,30 @@ export default function NavLinks({ closeMenu }) {
           </>
         )}
         {token && (
-          <NavLink
-            to="/"
-            onClick={logoutUser}
-            className="flex items-center text-sm lg:text-lg font-bold text-primary-content hover:text-accent"
-          >
-            <CiLogout className="inline mr-2" />
-            Logout
-          </NavLink>
+          <>
+            <NavLink
+              to="/profile"
+              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `flex items-center text-sm lg:text-lg font-bold ${
+                  isActive
+                    ? "text-accent"
+                    : "text-primary-content hover:text-accent"
+                }`
+              }
+            >
+              <MdPerson className="inline mr-2" />
+              {getUserUsername(token)}
+            </NavLink>
+            <NavLink
+              to="/login"
+              onClick={logoutUser}
+              className="flex items-center text-sm lg:text-lg font-bold text-primary-content hover:text-accent"
+            >
+              <CiLogout className="inline mr-2" />
+              Logout
+            </NavLink>
+          </>
         )}
         {/* Theme Toggle */}
         <ThemeSelector />

@@ -2,7 +2,9 @@ import { QueryClient } from "@tanstack/react-query";
 import {
   API_URL,
   API_KEY,
+  GAMERPOWER_KEY,
   CHEAPSHARK_API_URL,
+  GAMERPOWER_API_URL,
   SERVER_URL,
 } from "../utils/constants";
 import { getUserId } from "../auth/auth";
@@ -14,9 +16,9 @@ export const queryClient = new QueryClient();
  * @param {*} url - The URL to fetch data from
  * @returns - The JSON response from the API
  */
-const fetchFromApi = async (url) => {
+const fetchFromApi = async (url, options = null) => {
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, options);
 
     if (!response.ok) {
       return response.json().then((data) => {
@@ -71,8 +73,21 @@ export const fetchGamePrices = async ({ title }) => {
   return fetchFromApi(url);
 };
 
-// SERVER
+// GIVEAWAYS
+export const fetchGiveaways = async () => {
+  const url = `${GAMERPOWER_API_URL}/filter?platform=epic-games-store.steam.android&sort-by=popularity`;
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": GAMERPOWER_KEY,
+      "x-rapidapi-host": "gamerpower.p.rapidapi.com",
+    },
+  };
 
+  return fetchFromApi(url, options);
+};
+
+// SERVER
 const createRequestOptions = ({ method = "GET", body = null } = {}) => {
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
@@ -94,7 +109,7 @@ const createRequestOptions = ({ method = "GET", body = null } = {}) => {
   return options;
 };
 
-const apiRequest = async (url, options) => {
+const apiRequest = async (url, options = null) => {
   try {
     const response = await fetch(url, options);
 
@@ -148,6 +163,12 @@ export const deleteUser = async ({ userId }) => {
 export const fetchUserGamesProgress = async () => {
   const userId = getUserId(localStorage.getItem("game-trove-token"));
   const url = `${SERVER_URL}/userGameProgress/${userId}`;
+  const options = createRequestOptions();
+  return apiRequest(url, options);
+};
+
+export const fetchAllReviewsForGame = async ({ id }) => {
+  const url = `${SERVER_URL}/userGameProgress/reviews/${id}`;
   const options = createRequestOptions();
   return apiRequest(url, options);
 };

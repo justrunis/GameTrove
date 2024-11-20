@@ -37,8 +37,6 @@ export const updateUserProgressInfo = async (req: Request, res: Response) => {
       completedAt,
     } = req.body;
 
-    console.log(req.body);
-
     const user = await User.findById(userId);
 
     if (!user) {
@@ -50,6 +48,7 @@ export const updateUserProgressInfo = async (req: Request, res: Response) => {
       res
         .status(402)
         .json({ message: "Review must be shorter than 255 symbols" });
+      return;
     }
 
     const userProgress = await UserGameProgress.findOne({
@@ -100,6 +99,29 @@ export const updateUserProgressInfo = async (req: Request, res: Response) => {
     res
       .status(200)
       .json({ message: "User progress updated successfully.", userProgress });
+  } catch (error: any) {
+    res.status(404).json({ message: error.message });
+    return;
+  }
+};
+
+export const getUsersReviews = async (req: Request, res: Response) => {
+  try {
+    const gameId = req.params.id;
+
+    const reviews = await UserGameProgress.find({ game: gameId })
+      .select("user hasBeaten rating review playTime")
+      .populate("user", "username");
+
+    if (!reviews) {
+      res.status(404).json({ message: "User progress not found." });
+      return;
+    }
+
+    console.log(reviews);
+
+    res.status(200).json({ reviews: reviews });
+    return;
   } catch (error: any) {
     res.status(404).json({ message: error.message });
     return;

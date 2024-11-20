@@ -9,7 +9,7 @@ import {
 export default function UserProfileInformation({ data }) {
   return (
     <motion.div
-      className="flex flex-col gap-4 text-lg font-semibold text-base-content"
+      className="flex flex-col items-baseline gap-4 text-lg font-semibold text-base-content"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ staggerChildren: 0.1 }}

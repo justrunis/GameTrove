@@ -28,6 +28,7 @@ export function getUserUsername(token) {
     return;
   }
   const decodedToken = parseJwt(token);
+  console.log(decodedToken);
   return decodedToken.username;
 }
 

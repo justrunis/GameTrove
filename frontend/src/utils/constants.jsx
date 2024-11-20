@@ -1,7 +1,9 @@
 export const API_KEY = import.meta.env.VITE_API_KEY;
+export const GAMERPOWER_KEY = import.meta.env.VITE_GAMERPOWER_KEY;
 export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 export const API_URL = "https://api.rawg.io/api";
 export const CHEAPSHARK_API_URL = "https://www.cheapshark.com/api/1.0";
+export const GAMERPOWER_API_URL = "https://gamerpower.p.rapidapi.com/api";
 export const CHEAPSHARK_REDIRECT_URL =
   "https://www.cheapshark.com/redirect?dealID=";
 export const STALE_TIME = 1000 * 60 * 5; // 5 minutes

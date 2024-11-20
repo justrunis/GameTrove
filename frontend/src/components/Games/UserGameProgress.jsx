@@ -71,7 +71,7 @@ export default function UserGameProgress({ gameId }) {
             </Button>
           </div>
         ) : (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col items-start gap-2">
             <h2 className="text-error font-semibold text-center">
               You have no progress for this game
             </h2>

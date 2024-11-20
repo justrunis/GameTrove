@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import Games from "./pages/Games";
 import Game from "./pages/Game";
 import About from "./pages/About";
+import Giveaways from "./pages/Giveaways";
 
 import AdminRoute from "./components/Auth/AdminRoute";
 import Admin from "./pages/Admin";
@@ -46,6 +47,7 @@ function App() {
               <Route path="/games" element={<Games />} />
               <Route path="/games/:id" element={<Game />} />
               <Route path="/about" element={<About />} />
+              <Route path="/giveaways" element={<Giveaways />} />
 
               <Route element={<ProtectedRoute token={token} />}>
                 <Route path="/profile" element={<Profile />} />
