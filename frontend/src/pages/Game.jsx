@@ -19,6 +19,7 @@ import GameSeriesSection from "../components/Games/GameSeriesSection";
 import Collapsible from "../components/UI/Collapsible";
 import GameDLCSection from "../components/Games/GameDLCSection";
 import GamePrices from "../components/Games/GamePrices";
+import UserGameProgress from "../components/Games/UserGameProgress";
 
 export default function Game() {
   const { id } = useParams();
@@ -55,7 +56,7 @@ export default function Game() {
         <h1 className="text-4xl font-bold text-center text-base-content mb-8">
           {data.name}
         </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <GameImage
             image={data.background_image}
             rating={data.rating}
@@ -72,6 +73,7 @@ export default function Game() {
             metacritic={data.metacritic_url}
             rating={data.rating}
           />
+          <UserGameProgress gameId={id} />
         </div>
         <Collapsible title="Description">
           <p className="text-lg text-base-content mt-4">

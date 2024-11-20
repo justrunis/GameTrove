@@ -5,6 +5,7 @@ import {
   CHEAPSHARK_API_URL,
   SERVER_URL,
 } from "../utils/constants";
+import { getUserId } from "../auth/auth";
 
 export const queryClient = new QueryClient();
 
@@ -67,117 +68,93 @@ export const fetchGameDLC = async ({ id, page }) => {
 
 export const fetchGamePrices = async ({ title }) => {
   const url = `${CHEAPSHARK_API_URL}/games?title=${title}`;
-  console.log(url);
   return fetchFromApi(url);
 };
 
 // SERVER
-export const createUser = async ({ userData }) => {
-  const url = `${SERVER_URL}/auth/register`;
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  };
-  const response = await fetch(url, options);
 
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || "An error occurred");
+const createRequestOptions = ({ method = "GET", body = null } = {}) => {
+  const headers = {
+    Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
+  };
+
+  if (method !== "GET") {
+    headers["Content-Type"] = "application/json";
   }
 
-  return response.json();
+  const options = {
+    method,
+    headers,
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  return options;
+};
+
+const apiRequest = async (url, options) => {
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "An error occurred");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error(`Error in API request: ${error.message}`);
+    throw error;
+  }
+};
+export const createUser = async ({ userData }) => {
+  const url = `${SERVER_URL}/auth/register`;
+  const options = createRequestOptions({ method: "POST", body: userData });
+  return apiRequest(url, options);
 };
 
 export const loginUser = async ({ userData }) => {
   const url = `${SERVER_URL}/auth/login`;
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  };
-  const response = await fetch(url, options);
-
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || "An error occurred");
-  }
-
-  return response.json();
+  const options = createRequestOptions({ method: "POST", body: userData });
+  return apiRequest(url, options);
 };
 
 export const fetchAllUsers = async ({ page }) => {
   const url = `${SERVER_URL}/users?page=${page}`;
-  const options = {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
-    },
-  };
-  const response = await fetch(url, options);
-
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || "An error occurred");
-  }
-
-  return response.json();
+  const options = createRequestOptions();
+  return apiRequest(url, options);
 };
 
 export const fetchUserProfile = async () => {
   const url = `${SERVER_URL}/users/profile`;
-  const options = {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
-    },
-  };
-  const response = await fetch(url, options);
-
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || "An error occurred");
-  }
-
-  return response.json();
+  const options = createRequestOptions();
+  return apiRequest(url, options);
 };
 
 export const updateUser = async ({ id, userData }) => {
   const url = `${SERVER_URL}/users/${id}`;
-  const options = {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
-    },
-    body: JSON.stringify(userData),
-  };
-  const response = await fetch(url, options);
-
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || "An error occurred");
-  }
-
-  return response.json();
+  const options = createRequestOptions({ method: "PUT", body: userData });
+  return apiRequest(url, options);
 };
 
 export const deleteUser = async ({ userId }) => {
   const url = `${SERVER_URL}/users/${userId}`;
-  const options = {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("game-trove-token")}`,
-    },
-  };
-  const response = await fetch(url, options);
+  const options = createRequestOptions({ method: "DELETE" });
+  return apiRequest(url, options);
+};
 
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || "An error occurred");
-  }
+export const fetchUserGamesProgress = async () => {
+  const userId = getUserId(localStorage.getItem("game-trove-token"));
+  const url = `${SERVER_URL}/userGameProgress/${userId}`;
+  const options = createRequestOptions();
+  return apiRequest(url, options);
+};
 
-  return response.json();
+export const updateUserGameProgress = async ({ data }) => {
+  const userId = getUserId(localStorage.getItem("game-trove-token"));
+  const url = `${SERVER_URL}/userGameProgress/${userId}`;
+  const options = createRequestOptions({ method: "PUT", body: data });
+  return apiRequest(url, options);
 };

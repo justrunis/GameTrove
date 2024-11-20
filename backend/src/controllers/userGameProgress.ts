@@ -4,8 +4,6 @@ import UserGameProgress from "../models/userGameProgress";
 
 export const getUserProgressInfo = async (req: Request, res: Response) => {
   try {
-    const perPage = 10;
-
     const { userId } = req.params;
     const user = await User.findById(userId);
     if (!user) {
@@ -30,7 +28,7 @@ export const updateUserProgressInfo = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const {
-      gameId,
+      game,
       hasBeaten,
       rating,
       review,
@@ -39,15 +37,23 @@ export const updateUserProgressInfo = async (req: Request, res: Response) => {
       completedAt,
     } = req.body;
 
+    console.log(req.body);
+
     const user = await User.findById(userId);
 
     if (!user) {
-      res.status(404).json({ message: "User not found." });
+      res.status(401).json({ message: "User not found." });
       return;
     }
 
+    if (review.length > 255) {
+      res
+        .status(402)
+        .json({ message: "Review must be shorter than 255 symbols" });
+    }
+
     const userProgress = await UserGameProgress.findOne({
-      game: gameId,
+      game: game,
       user: userId,
     });
 
@@ -55,7 +61,7 @@ export const updateUserProgressInfo = async (req: Request, res: Response) => {
     if (!userProgress) {
       const newUserProgress = new UserGameProgress({
         user: userId,
-        game: gameId,
+        game: game,
         hasBeaten,
         rating,
         review,

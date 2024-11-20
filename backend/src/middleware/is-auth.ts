@@ -11,7 +11,7 @@ export interface AuthRequest extends Request {
 
 // Custom payload interface with expected properties
 interface CustomJwtPayload extends JwtPayload {
-  _id: string;
+  id: string;
   username: string;
   email: string;
   role: string;
