@@ -52,8 +52,6 @@ export default function Giveaways() {
 
     const paginatedData = data.slice(startIndex, endIndex);
 
-    console.log(paginatedData);
-
     return (
       <motion.div
         initial={{ opacity: 0 }}

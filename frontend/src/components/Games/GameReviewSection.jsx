@@ -28,13 +28,12 @@ export default function GameReviewSection({ id }) {
   }
 
   if (data && !isLoading) {
-    console.log(data);
     return (
       <div className="flex flex-col gap-2">
         {data.reviews.length > 0 ? (
           <>
             {data.reviews.map((review) => (
-              <GameReviewCard key={review.id} review={review} />
+              <GameReviewCard key={review._id} review={review} />
             ))}
           </>
         ) : (

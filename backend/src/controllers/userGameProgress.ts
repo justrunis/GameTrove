@@ -118,8 +118,6 @@ export const getUsersReviews = async (req: Request, res: Response) => {
       return;
     }
 
-    console.log(reviews);
-
     res.status(200).json({ reviews: reviews });
     return;
   } catch (error: any) {
